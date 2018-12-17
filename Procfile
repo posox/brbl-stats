@@ -1,1 +1,1 @@
-web: gunicorn stats:app
+web: gunicorn -t 120 stats:app
