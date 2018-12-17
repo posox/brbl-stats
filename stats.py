@@ -33,19 +33,22 @@ class User(Base):
     followers = sqla.Column(sqla.Integer)
     posts = sqla.Column(sqla.Integer)
     rate = sqla.Column(sqla.Float)
+    profile_pic_url = sqla.Column(sqla.String)
 
-    def __init__(self, name, followers, posts, rate):
+    def __init__(self, name, followers, posts, rate, profile_pic_url):
         self.name = name
         self.followers = followers
         self.posts = posts
         self.rate = rate
+        self.profile_pic_url = profile_pic_url
 
     def to_json(self):
         return {
             "account": self.name,
             "followers": self.followers,
             "posts": self.posts,
-            "rate": self.rate
+            "rate": self.rate,
+            "profile_pic_url": self.profile_pic_url
         }
 
 
@@ -81,6 +84,7 @@ def _get_stats():
 def _get_user_data(account_name):
     session = Session()
     for user in session.query(User).filter(User.name==account_name):
+        session.close()
         return user.to_json()
     account = entities.Account(account_name)
     data, _ = agent.get_media(account)
@@ -92,15 +96,12 @@ def _get_user_data(account_name):
         name=account_name,
         followers=account.followers_count,
         posts=account.media_count,
-        rate=rate * 100 / float(posts) / float(account.followers_count))
+        rate=rate * 100 / float(posts) / float(account.followers_count),
+        profile_pic_url=account.profile_pic_url)
     session.add(user)
     session.commit()
-    return {
-        "account": account_name,
-        "followers": account.followers_count,
-        "posts": account.media_count,
-        "rate": rate * 100 / float(posts) / float(account.followers_count)
-    }
+    session.close()
+    return user.to_json()
 
 
 if __name__ == '__main__':
