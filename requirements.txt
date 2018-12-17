@@ -1,5 +1,6 @@
-cachetools
 Flask
 gunicorn
+psycopg2-binary
+SQLAlchemy
 
 git+https://github.com/olegyurchik/InstaParser.git
