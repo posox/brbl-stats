@@ -3,6 +3,7 @@
 import json
 import logging
 
+import cachetools
 import flask
 from flask import Flask
 from instaparser import agents
@@ -25,6 +26,7 @@ def get_stats():
     return str(_get_stats())
 
 
+@cachetools.cached(cache=cachetools.TTLCache(maxsize=16, ttl=300))
 def _get_stats():
     agent = agents.Agent()
     stats = []
