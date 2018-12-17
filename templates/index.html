@@ -25,7 +25,7 @@
         {% for user in data %}
         <tr>
           <th score="row">{{ loop.index }}</th>
-          <td><a href="https://instagram.com/{{ user.account }}">{{ user.account }}</a></td>
+          <td><a target="_blank" rel="noopener noreferrer" href="https://instagram.com/{{ user.account }}">{{ user.account }}</a></td>
           <td>{{ user.followers }}</td>
           <td>{{ user.posts }}</td>
           <td>{{ '%0.2f' % user.rate | float }}</td>
