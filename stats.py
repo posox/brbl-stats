@@ -29,16 +29,18 @@ def _get_stats():
     for acc_id in json.load(open("accounts.json"))["accounts"]:
         account = entities.Account(acc_id)
         data, _ = agent.get_media(account)
-        likes = []
-        for i in range(min(len(data), 10)):
-            likes.append(data[i].likes_count)
+        rate = 0
+        posts = min(len(data), 12)
+        for i in range(posts):
+            rate += data[i].likes_count + data[i].comments_count
         stats.append({
             "account": acc_id,
             "followers": account.followers_count,
             "posts": account.media_count,
-            "last_likes_count": likes
+            "rate": rate * 100 / float(posts) / float(account.followers_count)
         })
-    return stats
+    sorted_stats = sorted(stats, key=lambda x: x["rate"], reverse=True)
+    return sorted_stats
 
 
 if __name__ == '__main__':

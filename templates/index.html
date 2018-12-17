@@ -18,15 +18,17 @@
           <th scope="col">Профиль</th>
           <th scope="col">Подписчики</th>
           <th scope="col">Посты</th>
+          <th scope="col">Рейтинг</th>
         </tr>
       </thead>
       <tbody>
         {% for user in data %}
         <tr>
-          <th score="row">1</th>
+          <th score="row">{{ loop.index }}</th>
           <td>{{ user.account }}</td>
           <td>{{ user.followers }}</td>
           <td>{{ user.posts }}</td>
+          <td>{{ '%0.2f' % user.rate | float }}</td>
         </tr>
         {% endfor %}
       </tbody>
