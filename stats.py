@@ -33,7 +33,7 @@ class User(Base):
     followers = sqla.Column(sqla.Integer)
     posts = sqla.Column(sqla.Integer)
     rate = sqla.Column(sqla.Float)
-    profile_pic_url = sqla.Column(sqla.String)
+    profile_pic_url = sqla.Column(sqla.String(1024))
 
     def __init__(self, name, followers, posts, rate, profile_pic_url):
         self.name = name
