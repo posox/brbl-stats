@@ -1,1 +1,1 @@
-web: gunicorn -t 120 stats:app
+web: gunicorn brbl_stats.api:app & python3.6 -m brbl_stats.engine & wait -n
