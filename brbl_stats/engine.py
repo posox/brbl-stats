@@ -14,7 +14,7 @@ sched = blocking.BlockingScheduler()
 agent = agents.Agent()
 
 
-@sched.scheduled_job('interval', minutes=60)
+@sched.scheduled_job('interval', minutes=30)
 def update_info():
     log.info("Starting update user stats!")
     with db.get_session() as session:
@@ -40,7 +40,7 @@ def _get_user_data(session, account_name):
         name=account_name,
         followers=account.followers_count,
         posts=account.media_count,
-        rate=rate * 100 / float(posts) / float(account.followers_count),
+        rate=rate / float(posts),
         profile_pic_url=account.profile_pic_url)
     session.merge(user)
 
