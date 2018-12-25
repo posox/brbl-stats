@@ -4,6 +4,7 @@ import os
 import sqlalchemy as sa
 from sqlalchemy import types as sa_types
 from sqlalchemy.ext import declarative
+from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 
 
@@ -11,7 +12,7 @@ Base = declarative.declarative_base()
 
 DATABASE_URL = os.environ['DATABASE_URL']
 engine = sa.create_engine(DATABASE_URL)
-Session = sessionmaker(bind=engine)
+Session = scoped_session(sessionmaker(bind=engine))
 
 
 class User(Base):

@@ -22,5 +22,10 @@ def index():
                                  last_updated=updated_time)
 
 
+@app.teardown_appcontext
+def cleanup(resp_or_exc):
+    db.Session.remove()
+
+
 if __name__ == "__main__":
     app.run()
