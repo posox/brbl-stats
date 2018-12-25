@@ -10,7 +10,7 @@ from sqlalchemy.orm import sessionmaker
 Base = declarative.declarative_base()
 
 DATABASE_URL = os.environ['DATABASE_URL']
-engine = sa.create_engine(DATABASE_URL, pool_size=10, max_overflow=0)
+engine = sa.create_engine(DATABASE_URL)
 Session = sessionmaker(bind=engine)
 
 
