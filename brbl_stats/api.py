@@ -16,5 +16,11 @@ app = flask.Flask(__name__)
 def index():
     with db.get_session() as session:
         data = session.query(db.User).order_by(db.User.rate.desc())
+        updated_time = session.query(db.Info).first().last_updated
     return flask.render_template("index.html",
-                                 data=list(map(lambda x: x.to_json(), data)))
+                                 data=list(map(lambda x: x.to_json(), data)),
+                                 last_updated=updated_time)
+
+
+if __name__ == "__main__":
+    app.run()
