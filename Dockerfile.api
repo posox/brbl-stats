@@ -1,0 +1,3 @@
+FROM posox/brbl-stats-common:latest
+
+CMD ["gunicorn", "brbl_stats.api:app"]
