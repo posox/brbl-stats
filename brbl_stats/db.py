@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker
 Base = declarative.declarative_base()
 
 DATABASE_URL = os.environ['DATABASE_URL']
-engine = sa.create_engine(DATABASE_URL)
+engine = sa.create_engine(DATABASE_URL, pool_pre_ping=True)
 Session = scoped_session(sessionmaker(bind=engine))
 
 
