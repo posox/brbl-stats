@@ -34,13 +34,20 @@ def _get_user_data(session, account_name):
     data, _ = agent.get_media(account)
     rate = 0
     posts = min(len(data), 12)
+    posts_cnt = 0
+    curr_time = datetime.datetime.now()
     for i in range(posts):
-        rate += data[i].likes_count + data[i].comments_count
+        post_date = datetime.datetime.fromtimestamp(data[i].date)
+        delta = curr_time() - post_date
+        if delta.days <= 21:    # 3 weeks
+            posts_cnt += 1
+            rate += data[i].likes_count + data[i].comments_count
+    posts_cnt = posts_cnt if posts_cnt else 1
     user = db.User(
         name=account_name,
         followers=account.followers_count,
         posts=account.media_count,
-        rate=rate / float(posts),
+        rate=rate / float(posts_cnt),
         profile_pic_url=account.profile_pic_url)
     session.merge(user)
 
