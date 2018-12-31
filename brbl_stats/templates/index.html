@@ -27,6 +27,7 @@
               <th scope="col">Подписчики</th>
               <th scope="col">Посты</th>
               <th scope="col">Рейтинг</th>
+              <th scope="col">ER</th>
             </tr>
           </thead>
           <tbody>
@@ -42,6 +43,7 @@
               <td>{{ user.followers }}</td>
               <td>{{ user.posts }}</td>
               <td>{{ '%0.2f' % user.rate | float }}</td>
+              <td>{{ '%0.2f' % user.er | float }}</td>
             </tr>
             {% endfor %}
           </tbody>

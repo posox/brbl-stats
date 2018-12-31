@@ -41,7 +41,8 @@ def _get_user_data(session, account_name):
         followers=account.followers_count,
         posts=account.media_count,
         rate=rate / float(posts),
-        profile_pic_url=account.profile_pic_url)
+        profile_pic_url=account.profile_pic_url,
+        er=rate * 100.0 / posts / account.followers_count)
     session.merge(user)
 
 

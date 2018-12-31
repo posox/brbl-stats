@@ -22,14 +22,16 @@ class User(Base):
     followers = sa.Column(sa.Integer)
     posts = sa.Column(sa.Integer)
     rate = sa.Column(sa.Float)
+    er = sa.Column(sa.Float)
     profile_pic_url = sa.Column(sa.String(1024))
 
-    def __init__(self, name, followers, posts, rate, profile_pic_url):
+    def __init__(self, name, followers, posts, rate, profile_pic_url, er):
         self.name = name
         self.followers = followers
         self.posts = posts
         self.rate = rate
         self.profile_pic_url = profile_pic_url
+        self.er = er
 
     def to_json(self):
         return {
@@ -37,7 +39,8 @@ class User(Base):
             "followers": self.followers,
             "posts": self.posts,
             "rate": self.rate,
-            "profile_pic_url": self.profile_pic_url
+            "profile_pic_url": self.profile_pic_url,
+            "er": self.er
         }
 
 
