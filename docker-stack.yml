@@ -2,7 +2,7 @@ version: "3"
 
 services:
   web:
-    image: posox/brbl-stats-api:latest
+    image: posox/brbl-stats:latest
     networks:
       - backend
       - frontend
@@ -20,8 +20,10 @@ services:
           memory: 100M
     ports:
       - "8000:8000"
+    command: gunicorn -b 0.0.0.0 brbl_stats.api:app
+
   engine:
-    image: posox/brbl-stats-engine:latest
+    image: posox/brbl-stats:latest
     networks:
       - backend
     environment:
@@ -30,9 +32,10 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
+    command: python3 -m brbl_stats.engine
 
   init-db:
-    image: posox/brbl-stats-engine:latest
+    image: posox/brbl-stats:latest
     networks:
       - backend
     environment:
@@ -42,6 +45,7 @@ services:
       restart_policy:
         condition: on-failure
     command: python -m brbl_stats.dbutils
+
   db:
     image: postgres:11
     networks:
