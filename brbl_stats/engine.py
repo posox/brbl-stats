@@ -20,7 +20,8 @@ def update_info():
     with db.get_session() as session:
         db_users = set(map(lambda x: x[0], session.query(db.User.name)))
         for acc_id in json.load(open("accounts.json"))["accounts"]:
-            db_users.remove(acc_id)
+            if acc_id in db_users:
+                db_users.remove(acc_id)
             try:
                 data = _get_user_data(session, acc_id)
             except Exception as e:
