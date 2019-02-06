@@ -42,7 +42,7 @@
           </thead>
           <tbody>
             {% for user in data %}
-            <tr>
+            <tr data-toggle="tooltip" title="Учитывается {{ user.rate_posts }} постов">
               <th score="row">{{ loop.index }}</th>
               <td>
                 <a target="_blank" rel="noopener noreferrer" href="https://instagram.com/{{ user.account }}">

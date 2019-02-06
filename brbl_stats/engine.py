@@ -47,14 +47,14 @@ def _get_user_data(session, account_name):
         if delta.days <= 21:
             counter += 1
             rate += data[i].likes_count + data[i].comments_count
-    counter = counter if counter else -1
     user = db.User(
         name=account_name,
         followers=account.followers_count,
         posts=account.media_count,
-        rate=rate / float(counter),
+        rate=rate / float(counter or 1),
+        rate_posts=counter,
         profile_pic_url=account.profile_pic_url,
-        er=rate * 100.0 / counter / account.followers_count)
+        er=rate * 100.0 / (counter or 1) / account.followers_count)
     session.merge(user)
 
 
