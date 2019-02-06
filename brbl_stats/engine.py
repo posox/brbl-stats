@@ -30,7 +30,7 @@ def update_info():
         session.query(db.User) \
             .filter(db.User.name.in_(db_users)) \
             .delete(synchronize_session='fetch')
-        session.merge(db.Info(id=1, last_updated=datetime.datetime.now()))
+        session.merge(db.Info(id=1, last_updated=datetime.datetime.utcnow()))
         session.commit()
     log.info("Update stats was finished!")
 
@@ -39,16 +39,22 @@ def _get_user_data(session, account_name):
     account = entities.Account(account_name)
     data, _ = agent.get_media(account)
     rate = 0
-    posts = min(len(data), 12)
-    for i in range(posts):
-        rate += data[i].likes_count + data[i].comments_count
+    counter = 0
+    curr_time = datetime.datetime.utcnow()
+    for i in range(min(len(data), 12)):
+        post_date = datetime.datetime.fromtimestamp(data[i].date)
+        delta = curr_time - post_date
+        if delta.days <= 21:
+            counter += 1
+            rate += data[i].likes_count + data[i].comments_count
+    counter = counter if counter else -1
     user = db.User(
         name=account_name,
         followers=account.followers_count,
         posts=account.media_count,
-        rate=rate / float(posts),
+        rate=rate / float(counter),
         profile_pic_url=account.profile_pic_url,
-        er=rate * 100.0 / posts / account.followers_count)
+        er=rate * 100.0 / counter / account.followers_count)
     session.merge(user)
 
 
