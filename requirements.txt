@@ -4,4 +4,4 @@ gunicorn
 psycopg2-binary
 SQLAlchemy
 
-git+https://github.com/posox/InstaParser.git
+git+https://github.com/olegyurchik/InstaParser.git
