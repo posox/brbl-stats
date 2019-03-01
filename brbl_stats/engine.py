@@ -5,6 +5,7 @@ import logging
 from apscheduler.schedulers import blocking
 from instaparser import agents
 from instaparser import entities
+import requests
 
 from brbl_stats import db
 
@@ -17,9 +18,14 @@ agent = agents.Agent()
 @sched.scheduled_job('interval', minutes=30)
 def update_info():
     log.info("Starting update user stats!")
+    log.info("Download user list")
+    resp = requests.get("https://raw.githubusercontent.com/posox/brbl-stats/master/accounts.json")
+    if not resp.ok:
+        log.error("Failed to get account list: %s", resp.reason)
+        return
     with db.get_session() as session:
         db_users = set(map(lambda x: x[0], session.query(db.User.name)))
-        for acc_id in json.load(open("accounts.json"))["accounts"]:
+        for acc_id in json.loads(resp.content)["accounts"]:
             if acc_id in db_users:
                 db_users.remove(acc_id)
             try:

@@ -3,5 +3,6 @@ Flask
 gunicorn
 psycopg2-binary
 SQLAlchemy
+requests
 
 git+https://github.com/olegyurchik/InstaParser.git
