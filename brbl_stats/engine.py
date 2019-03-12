@@ -36,7 +36,6 @@ def update_info():
                 log.error("Failed to get data for account: %s retrying...\n%s",
                           acc_id, e)
                 if e.response.status_code == 429:
-                    time.sleep(60)
                     try:
                         data = _get_user_data(session, acc_id)
                     except Exception as e:
@@ -65,7 +64,6 @@ def _get_user_data(session, account_name):
     while not stop:
         data, pointer = agent.get_media(account, pointer=pointer, count=20,
                                         delay=20)
-        time.sleep(20)
         for post in data:
             post_date = datetime.datetime.fromtimestamp(post.date)
             delta = curr_time - post_date
