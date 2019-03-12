@@ -16,16 +16,14 @@ app = flask.Flask(__name__)
 def index():
     with db.get_session() as session:
         data = session.query(db.User).order_by(db.User.old_rate.desc())
-    return flask.render_template("index.html",
-                                 data=list(map(lambda x: x.to_json(), data)))
+    return flask.render_template("index.html", data=data)
 
 
 @app.route("/new")
 def new():
     with db.get_session() as session:
         data = session.query(db.User).order_by(db.User.rate.desc())
-    return flask.render_template("new.html",
-                                 data=list(map(lambda x: x.to_json(), data)))
+    return flask.render_template("new.html", data=data)
 
 
 @app.teardown_appcontext

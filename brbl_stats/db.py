@@ -33,20 +33,6 @@ class User(Base):
         for k in kwargs:
             setattr(self, k, kwargs[k])
 
-    def to_json(self):
-        return {
-            "account": self.name,
-            "followers": self.followers,
-            "posts": self.posts,
-            "rate": self.rate,
-            "rate_posts": self.rate_posts,
-            "profile_pic_url": self.profile_pic_url,
-            "er": self.er,
-            "factor": self.factor,
-            "old_rate": self.old_rate,
-            "last_updated": self.last_updated
-        }
-
 
 def create_db():
     Base.metadata.create_all(engine)

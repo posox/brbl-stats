@@ -36,13 +36,13 @@
           </thead>
           <tbody>
             {% for user in data %}
-            <tr id="{{ user.account }}" data-toggle="tooltip">
+            <tr id="{{ user.name }}" data-toggle="tooltip">
               <th score="row">{{ loop.index }}</th>
               <td>
-                <a target="_blank" rel="noopener noreferrer" href="https://instagram.com/{{ user.account }}">
+                <a target="_blank" rel="noopener noreferrer" href="https://instagram.com/{{ user.name }}">
                   <div class="media">
                     <img src="{{ user.profile_pic_url }}" class="rounded-circle border border-light align-self-center mr-1" width="32" height="32" />
-                    <div class="media-body align-self-center">{{ user.account }}</div>
+                    <div class="media-body align-self-center">{{ user.name }}</div>
                   </div>
                 </a>
               </td>
@@ -53,7 +53,7 @@
             </tr>
             <script type="text/javascript">
               var d = new Date('{{ user.last_updated.isoformat() }}Z')
-              document.getElementById("{{ user.account }}").title = "Учитывается {{ user.rate_posts }} постов, обновлено " + d.toLocaleString("ru") + ", коэффициент рейтинга {{ '%0.2f' % user.factor }}"
+              document.getElementById("{{ user.name }}").title = "Учитывается {{ user.rate_posts }} постов, обновлено " + d.toLocaleString("ru") + ", коэффициент рейтинга {{ '%0.2f' % user.factor }}"
             </script>
             {% endfor %}
           </tbody>
