@@ -61,7 +61,8 @@ def _get_user_data(session, account_name):
     curr_time = datetime.datetime.utcnow()
     stop = False
     while not stop:
-        data, pointer = agent.get_media(account, pointer=pointer, delay=10)
+        data, pointer = agent.get_media(account, pointer=pointer, count=60,
+                                        delay=10)
         for post in data:
             post_date = datetime.datetime.fromtimestamp(post.date)
             delta = curr_time - post_date
