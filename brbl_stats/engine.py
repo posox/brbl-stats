@@ -17,7 +17,7 @@ sched = blocking.BlockingScheduler()
 agent = agents.Agent()
 
 
-@sched.scheduled_job('interval', minutes=30)
+@sched.scheduled_job('interval', minutes=60)
 def update_info():
     log.info("Starting update user stats!")
     log.info("Download user list")
@@ -63,8 +63,9 @@ def _get_user_data(session, account_name):
     curr_time = datetime.datetime.utcnow()
     stop = False
     while not stop:
-        data, pointer = agent.get_media(account, pointer=pointer, count=60,
-                                        delay=10)
+        data, pointer = agent.get_media(account, pointer=pointer, count=200,
+                                        delay=20)
+        time.sleep(20)
         for post in data:
             post_date = datetime.datetime.fromtimestamp(post.date)
             delta = curr_time - post_date
