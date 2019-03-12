@@ -63,7 +63,7 @@ def _get_user_data(session, account_name):
     curr_time = datetime.datetime.utcnow()
     stop = False
     while not stop:
-        data, pointer = agent.get_media(account, pointer=pointer, count=200,
+        data, pointer = agent.get_media(account, pointer=pointer, count=20,
                                         delay=20)
         time.sleep(20)
         for post in data:
