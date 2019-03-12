@@ -42,7 +42,7 @@
           </thead>
           <tbody>
             {% for user in data %}
-            <tr data-toggle="tooltip" title="Учитывается {{ user.rate_posts }} постов">
+            <tr data-toggle="tooltip" title="Учитывается {{ user.rate_posts }} постов, коэффициент рейтинга {{ '%0.2f' % user.factor }}">
               <th score="row">{{ loop.index }}</th>
               <td>
                 <a target="_blank" rel="noopener noreferrer" href="https://instagram.com/{{ user.account }}">
@@ -54,7 +54,7 @@
               </td>
               <td>{{ user.followers }}</td>
               <td>{{ user.posts }}</td>
-              <td>{{ '%0.2f' % user.old_rate | float }}</td>
+              <td>{{ '%0.2f' % user.rate | float }}</td>
               <td>{{ '%0.2f' % user.er | float }}</td>
             </tr>
             {% endfor %}

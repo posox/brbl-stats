@@ -22,18 +22,15 @@ class User(Base):
     followers = sa.Column(sa.Integer)
     posts = sa.Column(sa.Integer)
     rate = sa.Column(sa.Float)
+    old_rate = sa.Column(sa.Float)
     rate_posts = sa.Column(sa.Integer)
     er = sa.Column(sa.Float)
     profile_pic_url = sa.Column(sa.String(1024))
+    factor = sa.Column(sa.Float)
 
-    def __init__(self, name, followers, posts, rate, rate_posts, profile_pic_url, er):
-        self.name = name
-        self.followers = followers
-        self.posts = posts
-        self.rate = rate
-        self.rate_posts = rate_posts
-        self.profile_pic_url = profile_pic_url
-        self.er = er
+    def __init__(self, **kwargs):
+        for k in kwargs:
+            setattr(self, k, kwargs[k])
 
     def to_json(self):
         return {
@@ -43,7 +40,9 @@ class User(Base):
             "rate": self.rate,
             "rate_posts": self.rate_posts,
             "profile_pic_url": self.profile_pic_url,
-            "er": self.er
+            "er": self.er,
+            "factor": self.factor,
+            "old_rate": self.old_rate
         }
 
 
