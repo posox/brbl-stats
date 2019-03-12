@@ -27,6 +27,7 @@ class User(Base):
     er = sa.Column(sa.Float)
     profile_pic_url = sa.Column(sa.String(1024))
     factor = sa.Column(sa.Float)
+    last_updated = sa.Column(sa_types.DateTime)
 
     def __init__(self, **kwargs):
         for k in kwargs:
@@ -42,19 +43,9 @@ class User(Base):
             "profile_pic_url": self.profile_pic_url,
             "er": self.er,
             "factor": self.factor,
-            "old_rate": self.old_rate
+            "old_rate": self.old_rate,
+            "last_updated": self.last_updated
         }
-
-
-class Info(Base):
-    __tablename__ = "info"
-
-    id = sa.Column(sa.Integer, primary_key=True)
-    last_updated = sa.Column(sa_types.DateTime)
-
-    def __init__(self, id, last_updated):
-        self.id = id
-        self.last_updated = last_updated
 
 
 def create_db():

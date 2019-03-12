@@ -42,12 +42,14 @@ def update_info():
                     except Exception as e:
                         log.error("Failed to get data for account: %s\n%s",
                                   acc_id, e)
+                        continue
             except Exception as e:
                 log.error("Failed to get data for account: %s\n%s", acc_id, e)
+                continue
+            session.commit()
         session.query(db.User) \
             .filter(db.User.name.in_(db_users)) \
             .delete(synchronize_session='fetch')
-        session.merge(db.Info(id=1, last_updated=datetime.datetime.utcnow()))
         session.commit()
     log.info("Update stats was finished!")
 
@@ -82,7 +84,8 @@ def _get_user_data(session, account_name):
         rate_posts=counter,
         profile_pic_url=account.profile_pic_url,
         factor=factor,
-        er=rate * 100.0 / (counter or 1) / account.followers_count)
+        er=rate * 100.0 / (counter or 1) / account.followers_count,
+        last_updated=curr_time)
     session.merge(user)
 
 

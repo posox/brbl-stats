@@ -19,12 +19,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <title>Статистика пивных блогов</title>
-    <script type="text/javascript">
-        function localize(t) {
-            var d = new Date(t)
-            document.write(d.toLocaleString("ru"))
-        }
-    </script>
   </head>
   <body>
     <div class="container-fluid">
@@ -42,7 +36,7 @@
           </thead>
           <tbody>
             {% for user in data %}
-            <tr data-toggle="tooltip" title="Учитывается {{ user.rate_posts }} постов, коэффициент рейтинга {{ '%0.2f' % user.factor }}">
+            <tr id="{{ user.account }}" data-toggle="tooltip">
               <th score="row">{{ loop.index }}</th>
               <td>
                 <a target="_blank" rel="noopener noreferrer" href="https://instagram.com/{{ user.account }}">
@@ -57,12 +51,13 @@
               <td>{{ '%0.2f' % user.rate | float }}</td>
               <td>{{ '%0.2f' % user.er | float }}</td>
             </tr>
+            <script type="text/javascript">
+              var d = new Date('{{ user.last_updated.isoformat() }}Z')
+              document.getElementById("{{ user.account }}").title = "Учитывается {{ user.rate_posts }} постов, обновлено " + d.toLocaleString("ru") + ", коэффициент рейтинга {{ '%0.2f' % user.factor }}"
+            </script>
             {% endfor %}
           </tbody>
         </table>
-      </div>
-      <div class="row">
-          <p>Обновлено: <script type="text/javascript">localize('{{ last_updated.isoformat() }}Z')</script></p>
       </div>
     </div>
 
