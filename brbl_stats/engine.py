@@ -1,6 +1,7 @@
 import datetime
 import json
 import logging
+import random
 import time
 
 from apscheduler.schedulers import blocking
@@ -27,7 +28,9 @@ def update_info():
         return
     with db.get_session() as session:
         db_users = set(map(lambda x: x[0], session.query(db.User.name)))
-        for acc_id in json.loads(resp.content)["accounts"]:
+        accounts = json.loads(resp.content)["accounts"]
+        random.shuffle(accounts)
+        for acc_id in accounts:
             if acc_id in db_users:
                 db_users.remove(acc_id)
             try:
