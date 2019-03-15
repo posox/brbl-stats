@@ -76,6 +76,8 @@ def _get_user_data(session, account_name):
             else:
                 stop = True
                 break
+        if pointer is None:
+            break
     factor = 1.0 + 0.05 * (counter - 20)
     user = db.User(
         name=account_name,
