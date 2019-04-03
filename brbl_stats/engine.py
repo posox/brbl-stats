@@ -5,9 +5,9 @@ import random
 import time
 
 from apscheduler.schedulers import blocking
-from instaparser import agents
-from instaparser import entities
-from instaparser import exceptions
+from instagram import agents
+from instagram import entities
+from instagram import exceptions
 import requests
 
 from brbl_stats import db
@@ -15,7 +15,7 @@ from brbl_stats import db
 log = logging.getLogger(__name__)
 
 sched = blocking.BlockingScheduler()
-agent = agents.Agent()
+agent = agents.WebAgent()
 
 
 @sched.scheduled_job('interval', minutes=60)
