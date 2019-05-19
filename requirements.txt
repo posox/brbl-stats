@@ -5,4 +5,4 @@ psycopg2-binary
 SQLAlchemy
 requests
 
-git+https://github.com/olegyurchik/InstaParser.git
+git+https://github.com/OlegYurchik/pyInstagram.git
