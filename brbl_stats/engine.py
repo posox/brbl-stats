@@ -1,8 +1,8 @@
 import datetime
 import json
 import logging
+import os
 import random
-import time
 
 from apscheduler.schedulers import blocking
 from instagram import agents
@@ -14,8 +14,11 @@ from brbl_stats import db
 
 log = logging.getLogger(__name__)
 
+IG_USERNAME = os.environ.get("IG_USERNAME")
+IG_PASSWORD = os.environ.get("IG_PASSWORD")
+
 sched = blocking.BlockingScheduler()
-agent = agents.WebAgent()
+agent = agents.WebAgentAccount(IG_USERNAME)
 
 
 @sched.scheduled_job('interval', minutes=60)
@@ -94,4 +97,5 @@ def _get_user_data(session, account_name):
 
 
 if __name__ == "__main__":
+    agent.auth(IG_PASSWORD)
     sched.start()
