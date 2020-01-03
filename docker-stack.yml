@@ -30,6 +30,7 @@ services:
       DATABASE_URL: "postgres://postgres:password@db/postgres"
       IG_USERNAME: "${IG_USERNAME}"
       IG_PASSWORD: "${IG_PASSWORD}"
+      IG_CHECKPOINT: "${IG_CHECKPOINT}"
     deploy:
       replicas: 1
       restart_policy:

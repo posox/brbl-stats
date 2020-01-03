@@ -15,13 +15,25 @@ log = logging.getLogger(__name__)
 
 IG_USERNAME = os.environ.get("IG_USERNAME")
 IG_PASSWORD = os.environ.get("IG_PASSWORD")
+IG_CHECKPOINT = os.environ.get("IG_CHECKPOINT")
 
 sched = blocking.BlockingScheduler()
 agent = agents.WebAgentAccount(IG_USERNAME)
 
 
 def auth():
-    agent.auth(IG_PASSWORD)
+    try:
+        agent.auth(IG_PASSWORD)
+    except exceptions.CheckpointException as e:
+        resp = agent.checkpoint_send(
+            "https://www.instagram.com/accounts/login/ajax",
+            e.navigation['forward'],
+            1
+        )
+        agent.checkpoint(
+            e.checkpoint_url,
+            IG_CHECKPOINT
+        )
 
 
 @sched.scheduled_job('interval', minutes=240)
