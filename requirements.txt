@@ -3,6 +3,5 @@ Flask
 gunicorn
 psycopg2-binary
 SQLAlchemy
-requests
 
 git+https://github.com/OlegYurchik/pyInstagram.git

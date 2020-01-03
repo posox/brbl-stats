@@ -2,15 +2,14 @@ import datetime
 import json
 import logging
 import os
-import random
 
 from apscheduler.schedulers import blocking
 from instagram import agents
 from instagram import entities
 from instagram import exceptions
-import requests
 
 from brbl_stats import db
+from brbl_stats import logging as logger
 
 log = logging.getLogger(__name__)
 
@@ -21,18 +20,22 @@ sched = blocking.BlockingScheduler()
 agent = agents.WebAgentAccount(IG_USERNAME)
 
 
-@sched.scheduled_job('interval', minutes=60)
+def auth():
+    agent.auth(IG_PASSWORD)
+
+
+@sched.scheduled_job('interval', minutes=240)
 def update_info():
     log.info("Starting update user stats!")
-    log.info("Download user list")
-    resp = requests.get("https://raw.githubusercontent.com/posox/brbl-stats/master/accounts.json")
-    if not resp.ok:
-        log.error("Failed to get account list: %s", resp.reason)
-        return
     with db.get_session() as session:
         db_users = set(map(lambda x: x[0], session.query(db.User.name)))
-        accounts = json.loads(resp.content)["accounts"]
-        random.shuffle(accounts)
+        log.info("Load user list")
+        accounts, pointer, ok = [], None, True
+        while ok:
+            followers, pointer = agent.get_followers(pointer=pointer)
+            accounts.extend([a.username for a in followers])
+            ok = not pointer is None
+        log.info("Loaded %d accounts", len(accounts))
         for acc_id in accounts:
             if acc_id in db_users:
                 db_users.remove(acc_id)
@@ -97,5 +100,8 @@ def _get_user_data(session, account_name):
 
 
 if __name__ == "__main__":
-    agent.auth(IG_PASSWORD)
+    logger.setup_logging()
+    db.create_db()
+    auth()
+    update_info()
     sched.start()

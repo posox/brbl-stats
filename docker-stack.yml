@@ -36,20 +36,6 @@ services:
         condition: on-failure
     command: python3 -m brbl_stats.engine
 
-  init-db:
-    image: posox/brbl-stats:latest
-    networks:
-      - backend
-    environment:
-      DATABASE_URL: "postgres://postgres:password@db/postgres"
-      IG_USERNAME: "${IG_USERNAME}"
-      IG_PASSWORD: "${IG_PASSWORD}"
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-    command: python -m brbl_stats.dbutils
-
   db:
     image: postgres:11
     networks:
