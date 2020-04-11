@@ -4,4 +4,4 @@ gunicorn
 psycopg2-binary
 SQLAlchemy
 
-git+https://github.com/OlegYurchik/pyInstagram.git
+git+https://github.com/posox/pyInstagram.git
