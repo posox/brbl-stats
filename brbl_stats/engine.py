@@ -2,6 +2,8 @@ import datetime
 import json
 import logging
 import os
+import random
+import time
 
 from apscheduler.schedulers import blocking
 from instagram import agents
@@ -44,21 +46,22 @@ def update_info():
         log.info("Load user list")
         accounts, pointer, ok = [], None, True
         while ok:
-            followers, pointer = agent.get_followers(pointer=pointer)
+            followers, pointer = agent.get_followers(pointer=pointer, delay=20)
             accounts.extend([a.username for a in followers])
-            ok = not pointer is None
+            ok = pointer is not None
         log.info("Loaded %d accounts", len(accounts))
+        random.shuffle(accounts)
         for acc_id in accounts:
             if acc_id in db_users:
                 db_users.remove(acc_id)
             try:
-                data = _get_user_data(session, acc_id)
+                _get_user_data(session, acc_id)
             except exceptions.InternetException as e:
                 log.error("Failed to get data for account: %s retrying...\n%s",
                           acc_id, e)
                 if e.response.status_code == 429:
                     try:
-                        data = _get_user_data(session, acc_id)
+                        _get_user_data(session, acc_id)
                     except Exception as e:
                         log.error("Failed to get data for account: %s\n%s",
                                   acc_id, e)
@@ -83,8 +86,8 @@ def _get_user_data(session, account_name):
     curr_time = datetime.datetime.utcnow()
     stop = False
     while not stop:
-        data, pointer = agent.get_media(account, pointer=pointer, count=20,
-                                        delay=20)
+        data, pointer = agent.get_media(account, pointer=pointer, delay=20)
+        time.sleep(20)
         for post in data:
             post_date = datetime.datetime.fromtimestamp(post.date)
             delta = curr_time - post_date
